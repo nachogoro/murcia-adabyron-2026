@@ -16,8 +16,8 @@ $10^{10}$ operaciones, claramente fuera del límite de tiempo.
 
 # Mejora: ordenar uno y búsqueda binaria sobre el otro
 
-La observación clave es que, *fijada una CPU de precio $c$*, el problema
-se reduce a "*encontrar la GPU más cara cuyo precio sea $\le D - c$*". Si
+La observación clave es que, *fijada una CPU de precio* $c$, el problema
+se reduce a "*encontrar la GPU más cara cuyo precio sea* $\le D - c$". Si
 tenemos las GPUs ordenadas por precio, esa pregunta se contesta con una
 *búsqueda binaria* en $O(\log M)$, buscando el mayor elemento $x$ que satisface
 $x \leq D - c$.
