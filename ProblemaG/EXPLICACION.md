@@ -18,9 +18,7 @@ La cantidad real de parcelas con cultivo en el terreno está acotada por:
   cultivo. Todas las demás (las marcadas como cultivo *o* las nunca
   fotografiadas) podrían serlo. Por tanto el máximo es
 
-  $$
-  N \cdot M \;-\; \lvert \text{parcelas conocidas como tierra} \rvert
-  $$
+  $$N \cdot M - \lvert \text{parcelas conocidas como tierra} \rvert$$
 
 Por hipótesis del enunciado las fotografías son consistentes (una misma
 parcela no aparece marcada como cultivo en una y como tierra en otra), así
