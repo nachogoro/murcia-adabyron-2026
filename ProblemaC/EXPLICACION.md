@@ -27,7 +27,7 @@ hayan llegado a la misma configuración terminarán exactamente igual con juego
 
 # Definición del estado del combate
 
-Para que la equivalencia "*mismo estado $\Rightarrow$ mismo desenlace*" sea
+Para que la equivalencia "*mismo estado* $\Rightarrow$ *mismo desenlace*" sea
 cierta, el estado tiene que capturar toda la información que el juego
 puede usar a partir de ahora. En este problema esa información se reduce a:
 
