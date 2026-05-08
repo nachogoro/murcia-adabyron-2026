@@ -17,7 +17,7 @@ Hagamos las dos rondas de forma simbólica.
 descontados en impuestos. La cantidad tras el primer medio año es:
 
 $$
-X + X \cdot 0{,}8 \cdot (1 - 0{,}25) \;=\; X + X \cdot 0{,}6 \;=\; 1{,}6 \, X
+X + X \cdot 0{,}8 \cdot (1 - 0{,}25) = X + X \cdot 0{,}6 = 1{,}6 \cdot X
 $$
 
 **Segundo fondo:** rentabilidad del 30% con $\tfrac{1}{6}$ de los beneficios
@@ -25,9 +25,9 @@ descontados en impuestos. Aplicado sobre el resultado anterior:
 
 $$
 1{,}6 X + 1{,}6 X \cdot 0{,}3 \cdot \left(1 - \tfrac{1}{6}\right)
-\;=\; 1{,}6 X + 1{,}6 X \cdot 0{,}3 \cdot \tfrac{5}{6}
-\;=\; 1{,}6 X + 0{,}4 X
-\;=\; 2 X
+= 1{,}6 X + 1{,}6 X \cdot 0{,}3 \cdot \tfrac{5}{6}
+= 1{,}6 X + 0{,}4 X
+= 2 X
 $$
 
 El resultado final es siempre exactamente $2X$, sin redondeos intermedios.
