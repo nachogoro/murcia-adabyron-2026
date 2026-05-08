@@ -21,7 +21,7 @@ mejor caso de planificación (sin límite de tareas paralelas). La relación
 de recurrencia es:
 
 $$
-\text{ef}[v] \;=\; d_v \;+\; \max_{u \in \text{prereqs}(v)} \text{ef}[u]
+\text{ef}[v] = d_v + \max_{u \in \text{prereqs}(v)} \text{ef}[u]
 $$
 
 donde $d_v$ es la duración de $v$. El caso base es $\text{ef}[0] = d_0$
