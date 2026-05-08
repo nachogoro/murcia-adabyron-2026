@@ -18,20 +18,20 @@ alejar mucho de $\sqrt{N}$.
 Más concretamente:
 
 $$
-k^2 \;<\; k(k+1) \;<\; (k+1)^2
+k^2 < k(k+1) < (k+1)^2
 $$
 
 (siempre que $k \ge 1$). Tomando raíz:
 
 $$
-k \;<\; \sqrt{k(k+1)} \;<\; k+1.
+k < \sqrt{k(k+1)} < k+1.
 $$
 
 Es decir, $\sqrt{N}$ cae estrictamente entre $k$ y $k+1$, así que la
 única posibilidad es
 
 $$
-k \;=\; \lfloor \sqrt{N} \rfloor.
+k = \lfloor \sqrt{N} \rfloor.
 $$
 
 El algoritmo se reduce entonces a:
@@ -64,9 +64,9 @@ Primero, lo reescribimos multiplicando y dividiendo por el conjugado:
 
 $$
 \sqrt{k^2+k} - k
-\;=\; \frac{(\sqrt{k^2+k} - k)(\sqrt{k^2+k} + k)}{\sqrt{k^2+k} + k}
-\;=\; \frac{(k^2+k) - k^2}{\sqrt{k^2+k} + k}
-\;=\; \frac{k}{\sqrt{k^2+k} + k}.
+= \frac{(\sqrt{k^2+k} - k)(\sqrt{k^2+k} + k)}{\sqrt{k^2+k} + k}
+= \frac{(k^2+k) - k^2}{\sqrt{k^2+k} + k}
+= \frac{k}{\sqrt{k^2+k} + k}.
 $$
 
 Ahora tenemos una división, que es más fácil de acotar.
@@ -75,14 +75,14 @@ Usando el desarrollo de Taylor
 $\sqrt{1+x} = 1 + \tfrac{x}{2} - \tfrac{x^2}{8} + O(x^3)$ con $x = \tfrac{1}{k}$,
 
 $$
-\sqrt{k^2+k} \;=\; k\sqrt{1 + \tfrac{1}{k}} \;=\; k\left(1 + \tfrac{1}{2k} - \tfrac{1}{8k^2} + O(1/k^3)\right)
-\;=\; k + \tfrac{1}{2} - \tfrac{1}{8k} + O(1/k^2).
+\sqrt{k^2+k} = k\sqrt{1 + \tfrac{1}{k}} = k\left(1 + \tfrac{1}{2k} - \tfrac{1}{8k^2} + O(1/k^3)\right)
+= k + \tfrac{1}{2} - \tfrac{1}{8k} + O(1/k^2).
 $$
 
 Restando $k$:
 
 $$
-\sqrt{k^2 + k} - k \;\approx\; \frac{1}{2} - \frac{1}{8k}.
+\sqrt{k^2 + k} - k \approx \frac{1}{2} - \frac{1}{8k}.
 $$
 
 Es decir, $\sqrt{N}$ está aproximadamente a distancia $\tfrac{1}{2} -
@@ -101,9 +101,7 @@ Acotando ese error: para $N \le 10^{18}$,
   $|\Delta N| \le \tfrac{1}{2} \cdot 222 \approx 128$.
 - El error introducido en $\sqrt{N}$ por una perturbación $\Delta N$
   es aproximadamente
-  $$
-  |\Delta \sqrt{N}| \;\approx\; \frac{|\Delta N|}{2\sqrt{N}} \;\lesssim\; \frac{128}{2 \cdot 10^9} \;\approx\; 6{,}4 \cdot 10^{-8}.
-  $$
+  $$|\Delta \sqrt{N}| \approx \frac{|\Delta N|}{2\sqrt{N}} \lesssim \frac{128}{2 \cdot 10^9} \approx 6{,}4 \cdot 10^{-8}.$$
 - Para los $N$ pequeños la cuenta es aún más holgada: el `double`
   representa exactamente todos los enteros hasta $2^{53}$.
 
@@ -156,7 +154,7 @@ Por curiosidad metodológica, hay una tercera vía que también resuelve el
 problema: **búsqueda ternaria** sobre la función "*error*"
 
 $$
-g(k) \;=\; \lvert N - k(k+1) \rvert.
+g(k) = \lvert N - k(k+1) \rvert.
 $$
 
 Esta función es **unimodal en V** sobre $k \in [1, k_{\max}]$: como
@@ -164,17 +162,17 @@ $k(k+1)$ es estrictamente creciente, $g$ empieza alta y decreciente
 mientras $k(k+1) < N$, alcanza su mínimo cuando $k(k+1)$ se acerca lo
 máximo posible a $N$, y vuelve a crecer (estrictamente) cuando se pasa
 de largo. La búsqueda ternaria estándar converge a ese mínimo en
-$O(\log N)$ iteraciones, y el criterio "*$g_{\min} = 0 \iff N$ es
+$O(\log N)$ iteraciones, y el criterio "$g_{\min} = 0 \iff N$ *es
 oblongo*" es exactamente lo que pide el problema.
 
 Habría que preguntarse si puede haber empates (no un mínimo único sino dos).
 Imponiendo $g(k_0) = g(k_0+1)$:
 
 $$
-N - k_0(k_0+1) \;=\; (k_0+1)(k_0+2) - N
-\;\Longrightarrow\;
+N - k_0(k_0+1) = (k_0+1)(k_0+2) - N
+\Longrightarrow
 2N = 2(k_0+1)^2
-\;\Longrightarrow\;
+\Longrightarrow
 N = (k_0+1)^2.
 $$
 
