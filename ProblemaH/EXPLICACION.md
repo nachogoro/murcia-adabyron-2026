@@ -98,21 +98,21 @@ ya resuelto devuelve la respuesta inmediatamente, sin volver a expandirla.
 # Comprobaciones de rango en O(1)
 
 Cada transición de tipo "*colocar bloque*" pregunta cosas del tipo
-"*¿pueden las celdas $[l, r)$ ser todas negras?*". Una respuesta directa
+"*¿pueden las celdas* $[l, r)$ *ser todas negras?*". Una respuesta directa
 costaría $O(r - l)$, que en el peor caso es $O(N)$, y haría el algoritmo
 cuadrático en $N$ por bloque.
 
 La forma estándar de responder en $O(1)$ es precomputar dos sumas
 prefijas:
 
-- $\text{no\_blancas}[i] = $ nº de celdas en $[0, i)$ que **no** están
+- $\text{no blancas}[i] =$ nº de celdas en $[0, i)$ que **no** están
   fijadas a `'0'` (es decir, las que pueden ser negras: tanto las `'1'`
   como las indeterminadas `'X'`).
-- $\text{no\_negras}[i] = $ análogo, contando las que **no** están
+- $\text{no negras}[i] =$ análogo, contando las que **no** están
   fijadas a `'1'`.
 
-Con esto, "*todas las celdas en $[l, r)$ pueden ser negras*" equivale a
-$\text{no\_blancas}[r] - \text{no\_blancas}[l] = r - l$, en $O(1)$.
+Con esto, "*todas las celdas en* $[l, r)$ *pueden ser negras*" equivale a
+$\text{no blancas}[r] - \text{no blancas}[l] = r - l$, en $O(1)$.
 Análogo para "*pueden ser todas blancas*".
 
 # Complejidad
