@@ -14,19 +14,17 @@ backtracking ingenuo explora del orden de $N^M$ ramas. Con $N \le 3000$ y
 $M \le \lceil N/2 \rceil$, esto es totalmente intratable.
 
 La observación clave es que, mientras vamos colocando bloques de izquierda a
-derecha, en cada momento la única información que el "futuro" necesita del
-"pasado" se reduce a dos números: cuántas celdas hemos consumido ya y cuántos
-bloques hemos colocado. Todo lo que pase desde ahí en adelante depende
-exclusivamente de esos dos valores y del estado parcial (que es fijo, no es
-parte del estado de la búsqueda), no de la posición exacta en la que hayamos
-colocado los bloques ya fijados.
+derecha, en cada momento la única información que condiciona si la
+configuración actual es completable se reduce a dos números: cuántas celdas
+hemos consumido ya y cuántos bloques hemos colocado. Todo lo que pase desde ahí
+en adelante depende exclusivamente de esos dos valores y del estado parcial
+(que es fijo, no es parte del estado de la búsqueda), no de la posición exacta
+en la que hayamos colocado los bloques ya fijados.
 
 Es decir, muchas ramas distintas del backtracking convergen en el mismo
-$(i, j)$: si una rama explora ese punto y descubre que desde él no hay
-solución, esa información sirve para podar todas las ramas futuras que
-también lleguen ahí. Y al revés, si descubre que hay solución, podemos
-propagar la respuesta hacia arriba sin re-explorar. Eso es exactamente
-**programación dinámica con memoización**.
+$(i, j)$: si una rama explora exhaustivamente ese punto y concluye que desde él
+no hay solución, esa información sirve para podar todas las ramas futuras que
+también lleguen ahí. Esto es **programación dinámica con memoización**.
 
 # El estado del DP
 
@@ -49,10 +47,8 @@ procesar ni bloques por colocar; trivialmente válido).
 **Respuesta del problema:** $\text{dp}[0][0]$ (no hemos procesado ninguna
 celda ni colocado ningún bloque).
 
-Esta lectura del DP empareja exactamente con la pregunta que hace el
-problema: "*¿se puede completar el resto?*". Cada estado $\text{true}$
-significa que **sí existe alguna manera de terminar**, no solo que el
-prefijo hasta $i$ sea alcanzable.
+Cada estado $\text{true}$ significa que **sí existe alguna manera de
+terminar**.
 
 # Transiciones
 
@@ -60,20 +56,24 @@ Desde un estado $\text{dp}[i][j]$ con $i < N$ y $j < M$, podemos avanzar
 de exactamente dos formas:
 
 1. **Dejar la celda $i$ en blanco**. Solo es legal si la celda $i$ no
-   está fijada a negra en el estado parcial. La extensión existe si y
-   solo si existe desde $(i+1, j)$:
-   $$\text{dp}[i][j] \;\Leftarrow\; \text{dp}[i+1][j].$$
+   está fijada a negra en el estado parcial. El estado actual en ese caso
+   podrá extenderse si y solo si el estado $(i+1, j)$ puede extenderse:
+   $$\text{dp}[i][j] \Leftarrow \text{dp}[i+1][j].$$
 
 2. **Empezar aquí el bloque $(j+1)$-ésimo**. Solo es legal si:
    - Las $a_{j+1}$ celdas $[i, i + a_{j+1})$ pueden ser todas negras
-     (ninguna está fijada a blanca).
-   - Si tras el bloque queda al menos una celda más, esa celda
-     **separadora** $i + a_{j+1}$ puede ser blanca (no está fijada a
-     negra).
+     (ninguna está fijada a blanca); y
+   - Si tras el bloque o bien se han acabado las celdas ($i + a_{j+1} == N$),
+     o bien la celda que sigue puede ser una celda separadora con el siguiente
+     bloque (es decir, no está fijada a negra).
 
    Tras la transición consumimos también el separador, por lo que pasamos
    a $(i + a_{j+1} + 1, j+1)$:
-   $$\text{dp}[i][j] \;\Leftarrow\; \text{dp}[i + a_{j+1} + 1][j+1].$$
+   $$\text{dp}[i][j] \Leftarrow \text{dp}[i + a_{j+1} + 1][j+1].$$
+
+   Consumir el separador como parte de la transición evita tener que
+   arrastrar en el estado la información extra "*la última celda procesada
+   es blanca o forma parte de un bloque*".
 
    Como caso especial, si el bloque encaja justo al final ($i + a_{j+1} =
    N$) y se trata del último bloque pendiente ($j+1 = M$), la transición
@@ -84,21 +84,10 @@ Cuando $j = M$ pero $i < N$, no quedan bloques pero sí celdas por
 procesar; el estado es $\text{true}$ si y solo si todas esas celdas
 restantes pueden ser blancas (ninguna está fijada a negra).
 
-Consumir el separador como parte de la transición evita tener que
-arrastrar en el estado la información extra "*la última celda procesada
-es blanca o forma parte de un bloque*".
-
-El backtracking explora $\Theta(N^M)$ ramas porque cada bloque tiene del
-orden de $N$ inicios candidatos. La DP corta ese árbol en su raíz: solo
-hay $O(N \cdot M)$ pares $(i, j)$ posibles, así que *el número total de
-estados distintos es lineal en el tamaño de la entrada*, mucho menor que
-la cantidad de ramas del backtracking. Cada rama que pasa por un estado
-ya resuelto devuelve la respuesta inmediatamente, sin volver a expandirla.
-
 # Comprobaciones de rango en O(1)
 
 Cada transición de tipo "*colocar bloque*" pregunta cosas del tipo
-"*¿pueden las celdas* $[l, r)$ *ser todas negras?*". Una respuesta directa
+"*¿pueden las celdas $[l, r)$ ser todas negras?*". Una respuesta directa
 costaría $O(r - l)$, que en el peor caso es $O(N)$, y haría el algoritmo
 cuadrático en $N$ por bloque.
 
@@ -111,7 +100,7 @@ prefijas:
 - $\text{no negras}[i] =$ análogo, contando las que **no** están
   fijadas a `'1'`.
 
-Con esto, "*todas las celdas en* $[l, r)$ *pueden ser negras*" equivale a
+Con esto, "*todas las celdas en $[l, r)$ pueden ser negras*" equivale a
 $\text{no blancas}[r] - \text{no blancas}[l] = r - l$, en $O(1)$.
 Análogo para "*pueden ser todas blancas*".
 
@@ -128,12 +117,9 @@ La recurrencia descrita arriba se puede ejecutar en dos sentidos.
 
 ## Top-down (recursivo con memoización)
 
-Es la traducción más fiel a la idea de partida ("*vuelta atrás con poda
-informativa por estados ya vistos*"). Para resolver $\text{dp}[i][j]$,
-se llama recursivamente a las dos transiciones aplicables, cacheando el
-resultado para cada estado. La recursión solo expande estados realmente
-alcanzables desde $(0, 0)$, lo que en grafos de DP dispersos puede ser
-bastante menor que la tabla completa.
+Para resolver $\text{dp}[i][j]$, se llama recursivamente a las dos transiciones
+aplicables, cacheando el resultado para cada estado. La recursión solo expande
+estados realmente alcanzables desde $(0, 0)$.
 
 Como observación útil: en cuanto la recursión encuentra una transición
 que devuelve $\text{true}$ propaga el resultado hacia arriba sin probar
@@ -150,12 +136,7 @@ $(i + a_{j+1} + 1, j+1)$ que pueden necesitarse ya están resueltos. Los
 casos base se inicializan explícitamente: $\text{dp}[N][M]$ y la fila
 $\text{dp}[i][M]$ (que vale "*el resto puede ser todo blanco*").
 
-Ventaja: ejecución muy regular, sin recursión, con buen aprovechamiento
-de caché.
-
-Las dos versiones tienen la misma complejidad asintótica $O(N \cdot M)$ y
-dan exactamente el mismo resultado; la elección entre una y otra es
-cuestión de estilo y constantes.
+Su ventaja es que no requiere recursión y hace buen aprovechamiento de la caché.
 
 # Reformulación alternativa: DP de prefijo
 
@@ -184,7 +165,7 @@ Hay un matiz importante en esta formulación: $\text{dp}[i][j] =
 solución total; solo que el prefijo es **alcanzable**. Habrá multitud de
 estados marcados $\text{true}$ que en realidad sean callejones sin
 salida porque ninguna transición desde ellos sobreviva a las
-restricciones futuras. Esto no es un problema: el DP solo nos
+restricciones futuras. Esto no es un problema porque el DP solo nos
 pregunta al final si $\text{dp}[N][M]$ es $\text{true}$, y los callejones
 sin salida no contribuyen a marcarlo.
 
